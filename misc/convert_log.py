@@ -21,4 +21,4 @@ for file_name in sorted(glob('./*/log.json')):
             d[k].append(dat[k])
     data = {k:np.array(d[k]) for k in keys}
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(file_name_new)
+    df.to_csv(file_name_new, index=False)

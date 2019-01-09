@@ -11,4 +11,4 @@ for file_name in sorted(glob('./*/history.json')):
         data = f.read()
     data = json.loads(data)
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(file_name_new)
+    df.to_csv(file_name_new, index=False)

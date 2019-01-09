@@ -171,7 +171,7 @@ class Logger(Callback):
     
     def save_history(self):
         df = pd.DataFrame.from_dict(self.model.history.history)
-        df.to_csv(os.path.join(self.logdir, 'history.csv'))
+        df.to_csv(os.path.join(self.logdir, 'history.csv'), index=False)
     
     def append_log(self, logs):
         data = {k:[float(logs[k])] for k in self.model.metrics_names}
@@ -182,7 +182,7 @@ class Logger(Callback):
         #data['lr'] = [float(K.get_value(self.model.optimizer.lr))]
         df = pd.DataFrame.from_dict(data)
         with open(os.path.join(self.logdir, 'log.csv'), 'a') as f:
-            df.to_csv(f, header=f.tell()==0)
+            df.to_csv(f, header=f.tell()==0, index=False)
     
     def on_train_begin(self, logs=None):
         self.start_time = time.time()
@@ -231,13 +231,11 @@ def plot_log(log_dir, names=None, limits=None, window_length=250, log_dir_compar
         
     if names is None:
         names = set(d.keys())
-        if log_dir_compare is not None:
-            names.union_update(set(d2.keys()))
     else:
         names = set(names)
         names.intersection_update(set(d.keys()))
-        if log_dir_compare is not None:
-            names.intersection_update(set(d2.keys()))
+    if log_dir_compare is not None:
+        names.intersection_update(set(d2.keys()))
     names.difference_update({'epoch', 'batch', 'iteration', 'time'})
     print(names)
     
