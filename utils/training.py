@@ -180,7 +180,6 @@ class Logger(Callback):
         data['batch'] = [self.batch]
         data['time'] = [time.time() - self.start_time]
         #data['lr'] = [float(K.get_value(self.model.optimizer.lr))]
-        print(data)
         df = pd.DataFrame.from_dict(data)
         with open(os.path.join(self.logdir, 'log.csv'), 'a') as f:
             df.to_csv(f, header=f.tell()==0)
@@ -218,7 +217,7 @@ def plot_log(log_dir, names=None, limits=None, window_length=250, log_dir_compar
         limits = slice(*limits)
     
     print(log_dir)
-    d = pd.DataFrame.from_csv(os.path.join('.', 'checkpoints', log_dir, 'log.csv'))
+    d = pd.read_csv(os.path.join('.', 'checkpoints', log_dir, 'log.csv'))
     d = d[limits]
     iteration = np.array(d['iteration'])
     epoch = np.array(d['epoch'])
@@ -226,7 +225,7 @@ def plot_log(log_dir, names=None, limits=None, window_length=250, log_dir_compar
     
     if log_dir_compare is not None:
         print(log_dir_compare)
-        d2 = pd.DataFrame.from_csv(os.path.join('.', 'checkpoints', log_dir_compare, 'log.csv'))
+        d2 = pd.read_csv(os.path.join('.', 'checkpoints', log_dir_compare, 'log.csv'))
         d2 = d2[limits]
         iteration2 = np.array(d2['iteration'])
         
